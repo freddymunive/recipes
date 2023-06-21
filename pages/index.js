@@ -1,43 +1,40 @@
-import Container from '../components/container'
-import MoreStories from '../components/more-stories'
-import HeroPost from '../components/hero-post'
-import Intro from '../components/intro'
-import Layout from '../components/layout'
-import { getAllPostsForHome } from '../lib/api'
-import Head from 'next/head'
-import { CMS_NAME } from '../lib/constants'
+import Container from "../components/container";
+import Layout from "../components/layout";
+import Head from "next/head";
+import { CMS_NAME } from "../lib/constants";
+import { createClient } from "contentful";
+import RecipeCard from "../components/recipe/recipeCard";
 
-export default function Index({ preview, allPosts }) {
-  const heroPost = allPosts[0]
-  const morePosts = allPosts.slice(1)
+export default function Index({ preview, recipes }) {
+  const recipesMap = recipes.map((item) => (
+    <RecipeCard key={item.sys.id} content={item.fields} />
+  ));
+
   return (
     <>
       <Layout preview={preview}>
         <Head>
-          <title>{`Next.js Blog Example with ${CMS_NAME}`}</title>
+          <title>{`Next.js and ${CMS_NAME} Blog Page`}</title>
         </Head>
-        <Container>
-          <Intro />
-          {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.coverImage}
-              date={heroPost.date}
-              author={heroPost.author}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
-            />
-          )}
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-        </Container>
+        <Container>{recipesMap}</Container>
       </Layout>
     </>
-  )
+  );
 }
 
-export async function getStaticProps({ preview = false }) {
-  const allPosts = (await getAllPostsForHome(preview)) ?? []
+export async function getStaticProps() {
+  const client = createClient({
+    space: process.env.CONTENTFUL_SPACE_ID,
+    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+  });
+
+  const res = await client.getEntries({
+    content_type: "recipe",
+  });
+
   return {
-    props: { preview, allPosts },
-  }
+    props: {
+      recipes: res.items,
+    },
+  };
 }
