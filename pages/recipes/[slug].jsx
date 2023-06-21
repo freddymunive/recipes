@@ -52,20 +52,35 @@ const RecipePage = ({ recipe }) => {
     recipe.fields;
 
   const ingredientsMap = ingredients.map((ingredient, index) => (
-    <li key={index}>{ingredient}</li>
+    <li className="text-gray-800" key={index}>
+      {ingredient}
+    </li>
   ));
 
   return (
-    <div>
-      <h1>{title}</h1>
-      <Image
-        src={"https:" + featuredImage.fields.file.url}
-        width={featuredImage.fields.file.details.image.width}
-        height={featuredImage.fields.file.details.image.height}
-      />
-      <p>{`Time to make ${cookingTime} min`}</p>
-      <ul>{ingredientsMap}</ul>
-      <p>{documentToReactComponents(method)}</p>
+    <div className="bg-yellow-400 h-screen ">
+      <div className="flex flex-col justify-center h-screen items-center">
+        <div className="relative w-6/12 ">
+          <h1 className="absolute bg-white p-2 font-semibold bottom-0">
+            {title}
+          </h1>
+          <Image
+            src={"https:" + featuredImage.fields.file.url}
+            width={featuredImage.fields.file.details.image.width}
+            height={featuredImage.fields.file.details.image.height}
+            alt={featuredImage.fields.file.fileName}
+          />
+        </div>
+        <div className="mt-10 w-6/12 ">
+          <p className="mb-3 text-gray-700">{`Time to make ${cookingTime} min`}</p>
+          <h4 className="uppercase font-medium">Ingredients:</h4>
+          <ul className="mb-3">{ingredientsMap}</ul>
+          <h4 className="uppercase font-medium">method: </h4>
+          <p className="text-gray-800 pb-6">
+            {documentToReactComponents(method)}
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
