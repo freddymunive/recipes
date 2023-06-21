@@ -3,7 +3,7 @@ import Layout from "../components/layout";
 import Head from "next/head";
 import { CMS_NAME } from "../lib/constants";
 import { createClient } from "contentful";
-import RecipeCard from "../components/recipe/recipeCard";
+import RecipeCard from "../components/recipe/RecipeCard";
 
 export default function Index({ preview, recipes }) {
   const recipesMap = recipes.map((item) => (

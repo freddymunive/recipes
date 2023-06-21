@@ -47,7 +47,6 @@ export async function getStaticProps({ params }) {
 }
 
 const RecipePage = ({ recipe }) => {
-  console.log({ recipe });
   if (!recipe) return <Skeleton />;
   const { title, ingredients, featuredImage, cookingTime, method } =
     recipe.fields;
